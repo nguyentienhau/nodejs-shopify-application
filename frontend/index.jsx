@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { NavMenu } from "@shopify/app-bridge-react";
 import { ContextProvider, PolarisProvider, initI18n } from "./utilities";
+import { Layout, NotFound } from "./components/app-general";
 
 function App() {
 	const { t } = useTranslation();
@@ -35,12 +36,14 @@ function App() {
 						<Link to="/" rel="home" />
 						<Link to="/page-name">{t("NavigationMenu.pageName")}</Link>
 					</NavMenu>
-					<Routes>
-						{routes.map(function ({ path, component: Component }) {
-							return <Route key={path} path={path} element={<Component />} />;
-						})}
-						<Route path="*" element={t("NotFound.description")} />
-					</Routes>
+					<Layout>
+						<Routes>
+							{routes.map(function ({ path, component: Component }) {
+								return <Route key={path} path={path} element={<Component />} />;
+							})}
+							<Route path="*" element={<NotFound />} />
+						</Routes>
+					</Layout>
 				</BrowserRouter>
 			</PolarisProvider>
 		</ContextProvider>

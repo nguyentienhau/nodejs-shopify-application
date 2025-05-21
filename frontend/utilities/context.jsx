@@ -1,9 +1,22 @@
 import PropTypes from "prop-types";
 import { useState, createContext, useContext } from "react";
+import { AgUserSample, SpShopSample } from "@frontend/constants";
 
 const AppContext = createContext();
 
-const initialState = Object.freeze({});
+const initialState = Object.freeze({
+	appGeneral: {
+		user: AgUserSample
+	},
+	shopify: {
+		shop: SpShopSample,
+		customers: [],
+		customerTags: [],
+		products: [],
+		collections: [],
+		productTags: []
+	}
+});
 
 export function ContextProvider({ children = "" }) {
 	const [state, setState] = useState(initialState);
@@ -35,7 +48,7 @@ export function useDispatch() {
 
 	return function (type = "", payload = {}) {
 		setState(function (state = {}) {
-			const newState = state.copy();
+			const newState = state.deepCopy();
 			const keys = type.split(".").filter((key = "") => key);
 			const lastKey = keys.pop();
 			const target = keys.reduce((object = {}, key = "") => object[key], newState);
